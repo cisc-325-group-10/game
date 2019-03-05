@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 
-public class DisplayScript : MonoBehaviour
+public class DisplayScriptColourMemory : MonoBehaviour
 {
     public Text ColourLabel;
     public static int colourNumDisplayed = 4;
@@ -192,4 +192,4 @@ public class DisplayScript : MonoBehaviour
         }
 
     } // end Update method
-} // end DisplayScript class
+} // end DisplayScriptColourMemory class

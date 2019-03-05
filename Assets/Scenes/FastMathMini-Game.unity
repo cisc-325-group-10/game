@@ -304,7 +304,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 47.039993, y: -15.300003}
+  m_AnchoredPosition: {x: 47.039978, y: -15.299988}
   m_SizeDelta: {x: 91.07001, y: 30.600006}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &609109246
@@ -662,7 +662,7 @@ MonoBehaviour:
   ansWrongCount: 0
   totalQuestions: 0
   timer: 0
-  endTime: 45
+  endTime: 30
 --- !u!4 &1461234163
 Transform:
   m_ObjectHideFlags: 0
