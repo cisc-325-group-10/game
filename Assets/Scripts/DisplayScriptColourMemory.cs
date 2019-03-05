@@ -22,7 +22,7 @@ public class DisplayScriptColourMemory : MonoBehaviour
      */
     void Start()
     {
-        ColourLabel.text = "Say 'Start' to begin...";
+        ColourLabel.text = "Say 'Start' to begin";
     } // end Start method
 
     /* -------------------------------------------------------------------------------------

@@ -15,7 +15,6 @@ public class DisplayScriptFastMath : MonoBehaviour
     public int ansWrongCount = 0;
     public int totalQuestions = 0;
     public float timer = 0.0f;
-    public float endTime = 30.0f;
 
     // creating math questions to display
     //      TODO: add more of these questions later
@@ -113,6 +112,8 @@ public class DisplayScriptFastMath : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.S))
         {
             ansWrongCount++;
+            ansCorrectCount = 0;
+            Score.text = "Score: " + 0;
             //QuestionLabel.text = "Wrong...Try Again.";
         }
     }
@@ -122,7 +123,7 @@ public class DisplayScriptFastMath : MonoBehaviour
      */
      void TimerUpdate(float t)
     {
-        TimerText.text = "Time: " + (30 - Math.Round(t)).ToString();
+        TimerText.text = "Time: " + Math.Round(t).ToString();
     }
 
 
@@ -137,14 +138,14 @@ public class DisplayScriptFastMath : MonoBehaviour
             startQuestions = true;
         }
 
-        if (startQuestions == true && timer < endTime)
+        if (ansCorrectCount < 10)
         {
             runQuestions();
         }
 
-        if (timer >= endTime)
+        if (ansCorrectCount == 10)
         {
-            QuestionLabel.text = "Questions correct: " + ansCorrectCount.ToString() + '\n' + "Questions wrong: " + ansWrongCount.ToString();
+            QuestionLabel.text = "Questions wrong: " + ansWrongCount.ToString() + '\n' + "Time: " + Math.Round(timer).ToString();
         }
 
     } // end Update method
