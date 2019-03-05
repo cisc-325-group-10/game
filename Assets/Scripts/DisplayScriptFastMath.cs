@@ -87,7 +87,7 @@ public class DisplayScriptFastMath : MonoBehaviour
      */
     void Start()
     {
-        QuestionLabel.text = "Say 'Start' to begin...";
+        QuestionLabel.text = "Say 'Start' to begin";
     } // end Start method
 
     /*
@@ -107,13 +107,13 @@ public class DisplayScriptFastMath : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.W))
         {
             ansCorrectCount++;
-            QuestionLabel.text = "Correct!";
+            //QuestionLabel.text = "Correct!";
             Score.text = "Score: " + ansCorrectCount.ToString();
         }
         else if (Input.GetKeyDown(KeyCode.S))
         {
             ansWrongCount++;
-            QuestionLabel.text = "Wrong...Try Again.";
+            //QuestionLabel.text = "Wrong...Try Again.";
         }
     }
 
@@ -122,10 +122,7 @@ public class DisplayScriptFastMath : MonoBehaviour
      */
      void TimerUpdate(float t)
     {
-        if ((double)t % 0 == 0)
-        {
-            TimerText.text = "Time: " + t.ToString();
-        }
+        TimerText.text = "Time: " + (30 - Math.Round(t)).ToString();
     }
 
 
@@ -147,7 +144,7 @@ public class DisplayScriptFastMath : MonoBehaviour
 
         if (timer >= endTime)
         {
-            QuestionLabel.text = "Questions correct: " + ansCorrectCount.ToString();
+            QuestionLabel.text = "Questions correct: " + ansCorrectCount.ToString() + '\n' + "Questions wrong: " + ansWrongCount.ToString();
         }
 
     } // end Update method
