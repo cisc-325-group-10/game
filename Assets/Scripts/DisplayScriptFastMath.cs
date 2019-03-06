@@ -17,26 +17,7 @@ public class DisplayScriptFastMath : MonoBehaviour
     public int ansWrongCount = 0;
     public int totalQuestions = 0;
     public float timer = 0.0f;
-
-    // creating math questions to display
-    //      TODO: add more of these questions later, or create a generator
-    //          that generates them randomly.
-    private Question[] questions = new Question[]
-        {
-            new Question("1 + 1 = ", 2),
-            new Question("13 + 12 = ", 25),
-            new Question("28 + 70 = ", 98),
-            new Question("30 + 45 = ", 75),
-            new Question("10 - 5 = ", 5),
-            new Question("17 - 3 = ", 14),
-            new Question("20 * 2 = ", 40),
-            new Question("5 * 3 = ", 15),
-            new Question("4 / 2 = ", 2),
-            new Question("18 / 3 = ", 6),
-            new Question("5 + 1 = ", 6),
-            new Question("5 * 5 = ", 25),
-            new Question("12 / 3 = ", 4)
-    };
+    Question currentQuestion = null;
 
     /* -------------------------------------------------------------------------------------
      * Class holds information for the math problem
@@ -81,12 +62,64 @@ public class DisplayScriptFastMath : MonoBehaviour
     } // end Question class
 
     /* -------------------------------------------------------------------------------------
-     * returns a random number, corresponding to an index in our questions array
+     * returns a random number, within the given range
      */
-     private int RandNum()
+     private int RandNum(int min, int max)
     {
         System.Random r = new System.Random();
-        return r.Next(0, questions.Length);
+        return r.Next(min, max);
+    }
+
+    /* -------------------------------------------------------------------------------------
+ * generates a random question of 2 random numbers and either addition, subtraction, 
+ *      multiplication, division or mod   
+ */
+    private Question generateQuestion()
+    {
+        Question q = new Question("", 0);
+        // 0 = +, 1 = -, * = 2, / = 3, % = 4
+        int operation = RandNum(0, 5);
+        int num1, num2, answer;
+
+        switch (operation)
+        {
+            case 1:
+                // subtraction
+                num1 = RandNum(50, 101);
+                num2 = RandNum(0, 50);
+                answer = num1 - num2;
+                return new Question(num1 + " - " + num2, answer);
+                break;
+            case 2:
+                // multiplication
+                num1 = RandNum(0, 11);
+                num2 = RandNum(0, 11);
+                answer = num1 * num2;
+                return new Question(num1 + " * " + num2, answer);
+                break;
+            case 3:
+                // division
+                answer = RandNum(0, 21);
+                num1 = answer * RandNum(0, 6);
+                num2 = num1 / answer;
+                return new Question(num1 + " / " + num2, answer);
+                break;
+            case 4:
+                // mod
+                num1 = RandNum(0, 101);
+                num2 = RandNum(0, 101);
+                answer = num1 % num2;
+                return new Question(num1 + " % " + num2, answer);
+                break;
+            case 0:
+            default:
+                // addition
+                num1 = RandNum(0, 101);
+                num2 = RandNum(0, 101);
+                answer = num1 + num2;
+                return new Question(num1 + " + " + num2, answer);
+                break;
+        }
     }
 
     /* -------------------------------------------------------------------------------------
@@ -110,27 +143,36 @@ public class DisplayScriptFastMath : MonoBehaviour
      */
     private void runQuestions()
     {
+        if (currentQuestion == null)
+        {
+            currentQuestion = generateQuestion();
+        }
         timer += Time.deltaTime;
         TimerUpdate(timer);
 
         if (totalQuestions == ansCorrectCount + ansWrongCount)
         {
             totalQuestions++;
-            QuestionLabel.text = questions[RandNum()].getQuestion();
+            //QuestionLabel.text = questions[RandNum(0, questions.Length)].getQuestion();
+            QuestionLabel.text = currentQuestion.getQuestion();
         }
 
+        // if answer is correct
         if (Input.GetKeyDown(KeyCode.W))
         {
             ansCorrectCount++;
             //QuestionLabel.text = "Correct!";
             Score.text = "Score: " + ansCorrectCount.ToString();
+            currentQuestion = null;
         }
+        // if answer is not correct
         else if (Input.GetKeyDown(KeyCode.S))
         {
             ansWrongCount++;
             ansCorrectCount = 0;
             Score.text = "Score: " + 0;
             //QuestionLabel.text = "Wrong...Try Again.";
+            currentQuestion = null;
         }
     }
 
