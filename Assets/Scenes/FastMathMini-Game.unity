@@ -267,7 +267,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -50.73001, y: -12.540001}
+  m_AnchoredPosition: {x: -50.73001, y: -12.539978}
   m_SizeDelta: {x: 98.45999, y: 25.080002}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &609109244
@@ -487,7 +487,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.0000076294, y: -70.6}
+  m_AnchoredPosition: {x: 0.0000076294, y: -103}
   m_SizeDelta: {x: 298.8, y: 109.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &744280710
@@ -532,8 +532,8 @@ MonoBehaviour:
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_HorizontalOverflow: 1
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: 
 --- !u!222 &744280712
@@ -822,10 +822,12 @@ MonoBehaviour:
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_HorizontalOverflow: 1
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Answer 10 questions right in a row to win
+  m_Text: 'Answer 10 questions right in a row to win
+
+    Say "Alexa, my answer is ________" to give Alexa your answer'
 --- !u!222 &1840193593
 CanvasRenderer:
   m_ObjectHideFlags: 0

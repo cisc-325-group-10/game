@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using UnityEngine.SceneManagement;
 
 public class DisplayScriptColourMemory : MonoBehaviour
 {
+    // COLOURS USED: red, white, yellow, green, blue, gray/grey
     public Text ColourLabel;
     public static int colourNumDisplayed = 4;
-    public static int colourNumOptions = 5; // if we add another colour option, update this
+    public static int colourNumOptions = 6; // if we add another colour option, update this
     public string[] seenColours = new string[colourNumDisplayed];
 
     bool playColours = false;
@@ -23,7 +25,15 @@ public class DisplayScriptColourMemory : MonoBehaviour
     void Start()
     {
         ColourLabel.text = "Say 'Start' to begin";
+        String sceneNum = SceneManager.GetActiveScene().name;
+        Debug.Log(sceneNum);
     } // end Start method
+
+    public String startGame()
+    {
+        // put in dun dun dun
+        return "Starting Remember the Colours Mini-Game";
+    }
 
     /* -------------------------------------------------------------------------------------
      * returns a random number, corresponding to an index in our materials
@@ -47,7 +57,7 @@ public class DisplayScriptColourMemory : MonoBehaviour
     } // end ChangeToRed method
 
     /* -------------------------------------------------------------------------------------
-     * Changes the colour to orange, and adds 'Orange' to our list
+     * Changes the colour to white, and adds 'White' to our list
      *      of colours that the user has seen
      */
     private void ChangeToWhite(int i)
@@ -91,9 +101,20 @@ public class DisplayScriptColourMemory : MonoBehaviour
     } // end ChangeToBlue method
 
     /* -------------------------------------------------------------------------------------
+    * Changes the colour to gray, and adds 'Gray' to our list
+    *      of colours that the user has seen
+    */
+    private void ChangeToGray(int i)
+    {
+        ColourLabel.text = (i + 1).ToString() + ". GRAY";
+        ColourLabel.color = Color.gray;
+        seenColours[i] = "GRAY";
+    } // end ChangeToGray method
+
+    /* -------------------------------------------------------------------------------------
      * plays the colour sequence when
      */
-     void playColourSequence()
+    void playColourSequence()
      {
         if (counter <= colourNumOptions + 1)
         {
@@ -125,9 +146,13 @@ public class DisplayScriptColourMemory : MonoBehaviour
             {
                 ChangeToGreen(counter);
             }
-            else
+            else if (randNum == 4)
             {
                 ChangeToBlue(counter);
+            }
+            else
+            {
+                ChangeToGray(counter);
             }
 
             timer = 0;

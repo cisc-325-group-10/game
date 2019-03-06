@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using UnityEngine.SceneManagement;
 
 public class DisplayScriptFastMath : MonoBehaviour
 {
@@ -11,23 +12,30 @@ public class DisplayScriptFastMath : MonoBehaviour
     public Text TimerText;
 
     bool startQuestions = false;
+    bool initial = true;
     public int ansCorrectCount = 0;
     public int ansWrongCount = 0;
     public int totalQuestions = 0;
     public float timer = 0.0f;
 
     // creating math questions to display
-    //      TODO: add more of these questions later
+    //      TODO: add more of these questions later, or create a generator
+    //          that generates them randomly.
     private Question[] questions = new Question[]
         {
             new Question("1 + 1 = ", 2),
+            new Question("13 + 12 = ", 25),
             new Question("28 + 70 = ", 98),
+            new Question("30 + 45 = ", 75),
             new Question("10 - 5 = ", 5),
             new Question("17 - 3 = ", 14),
             new Question("20 * 2 = ", 40),
             new Question("5 * 3 = ", 15),
             new Question("4 / 2 = ", 2),
-            new Question("18 / 3 = ", 6)
+            new Question("18 / 3 = ", 6),
+            new Question("5 + 1 = ", 6),
+            new Question("5 * 5 = ", 25),
+            new Question("12 / 3 = ", 4)
     };
 
     /* -------------------------------------------------------------------------------------
@@ -86,13 +94,21 @@ public class DisplayScriptFastMath : MonoBehaviour
      */
     void Start()
     {
-        QuestionLabel.text = "Say 'Start' to begin";
+        QuestionLabel.text = "Say 'Start the game' to begin";
+        //String sceneNum = SceneManager.GetActiveScene().name;
+        //Debug.Log(sceneNum);
     } // end Start method
+
+    public String startGame()
+    {
+        // put in dun dun dun
+        return "Starting Fast Math Mini-Game";
+    }
 
     /*
      * This method runs the questions for the user to answer
      */
-     private void runQuestions()
+    private void runQuestions()
     {
         timer += Time.deltaTime;
         TimerUpdate(timer);
@@ -138,14 +154,16 @@ public class DisplayScriptFastMath : MonoBehaviour
             startQuestions = true;
         }
 
-        if (ansCorrectCount < 10)
+        if (ansCorrectCount < 10 && startQuestions == true)
         {
             runQuestions();
         }
 
         if (ansCorrectCount == 10)
         {
-            QuestionLabel.text = "Questions wrong: " + ansWrongCount.ToString() + '\n' + "Time: " + Math.Round(timer).ToString();
+            QuestionLabel.text = "Questions wrong: " + ansWrongCount.ToString() 
+                + '\n' + "Time: " + Math.Round(timer).ToString() 
+                + '\n' + "Say 'Alexa, move to next game' to \n go to the next game.";
         }
 
     } // end Update method
