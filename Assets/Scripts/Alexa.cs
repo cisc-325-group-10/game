@@ -1,37 +1,35 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using Amazon;
 using Amazon.DynamoDBv2.Model;
 using AmazonsAlexa.Unity.AlexaCommunicationModule;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Networking;
-using System.Collections;
-using System.Security.Cryptography.X509Certificates;
-
-public static class Alexa
+using UnityEngine.SceneManagement;
+public class Alexa : MonoBehaviour
 {
+
     //TODO: explore using seperate lower privledge keys on unity end
     private const string publishKey = "pub-c-6592a63e-134f-4327-9ed7-b2f36a38b8b2";
     private const string subscribeKey = "sub-c-6ba13e32-38a0-11e9-b5cf-1e59042875b2";
     private const string tableName = "AlexaPlusUnityTest";
     //TODO: reduce the scope of db write permissions
     private const string identityPoolId = "us-east-1:36470eab-6335-4f67-a00e-503f04865b2e";
-    private static string AWSRegion = RegionEndpoint.USEast1.SystemName;
+    private string AWSRegion = RegionEndpoint.USEast1.SystemName;
     private const bool debug = false;
     // TODO: use the value provided from alexa to support multiple games
-    private const string channel = "ABCD";
-    private static Dictionary<string, AttributeValue> attributes;
-    private static AmazonAlexaManager alexaManager;
+    private const string channel = "XXXXX";
+    private Dictionary<string, AttributeValue> attributes;
+    private AmazonAlexaManager alexaManager;
 
-
-
-
-    static Alexa()
+    // Start is called before the first frame update
+    void Start()
     {
+        UnityInitializer.AttachToGameObject(this.gameObject);
         AWSConfigs.HttpClient = AWSConfigs.HttpClientOption.UnityWebRequest;
-        alexaManager = new AmazonAlexaManager(publishKey, subscribeKey, channel, tableName, identityPoolId, AWSRegion, null, OnAlexaMessage, null, debug); //Initialize the Alexa Manager
+        alexaManager = new AmazonAlexaManager(publishKey, subscribeKey, channel, tableName, identityPoolId, AWSRegion, null, OnAlexaMessage, null, debug);
     }
 
-    private static void ConfirmSetup(GetSessionAttributesEventData eventData)
+    private void ConfirmSetup(GetSessionAttributesEventData eventData)
     {
         //Notify the skill that setup has completed by updating the skills persistant attributes (in DynamoDB)
         attributes = eventData.Values;
@@ -40,7 +38,7 @@ public static class Alexa
     }
 
 
-    private static void OnAlexaMessage(HandleMessageEventData eventData)
+    private void OnAlexaMessage(HandleMessageEventData eventData)
     {
         //Listen for new messages from the Alexa skill
         Debug.Log("OnAlexaMessage");
@@ -66,14 +64,31 @@ public static class Alexa
                 case "AlexaUserId":
                     ConfirmSetup(result);
                     break;
-                // put alexa command handlers here
+                case "StartRequest":
+                    string response = StartGame();
+                    alexaManager.SendToAlexaSkill(response, null);
+                    break;
                 default:
                     break;
             }
         });
     }
 
-    private static void SetAttributesCallback(SetSessionAttributesEventData eventData)
+    private string StartGame()
+    {
+        DisplayScriptFastMath[] mathComp = FindObjectsOfType<DisplayScriptFastMath>();
+        if (mathComp.Length > 0)
+        {
+            return mathComp[0].startGame();
+        }
+        DisplayScriptColourMemory[] colorComp = FindObjectsOfType<DisplayScriptColourMemory>();
+        if (colorComp.Length > 0)
+        {
+            return colorComp[0].startGame();
+        }
+        return "";
+    }
+    private void SetAttributesCallback(SetSessionAttributesEventData eventData)
     {
         //Callback for when session attributes have been updated
         Debug.Log("OnSetAttributes");

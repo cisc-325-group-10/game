@@ -8,24 +8,26 @@ public class SceneManagerScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
         // NOTE: must add the scenes to the build settings before this will
         //      work, (file -> build settings -> add open scenes (must have the
         //      scene open)
         string fastMathName = "FastMathMini-Game";
         string colourMemoryName = "ColourMemoryMini-Game";
 
-        LoadScene(fastMathName);
+        StartCoroutine(LoadScene(fastMathName));
     }
 
-    void LoadScene(string sceneName)
+    IEnumerator LoadScene(string sceneName)
     {
-       SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
+        yield return SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+        Scene scene = SceneManager.GetSceneByName(sceneName);
+        SceneManager.SetActiveScene(scene);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

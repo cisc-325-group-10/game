@@ -55,7 +55,7 @@ public class DisplayScriptFastMath : MonoBehaviour
         /*
          * returns the string in the question variable
          */
-         public String getQuestion()
+        public String getQuestion()
         {
             return question;
         }
@@ -64,7 +64,7 @@ public class DisplayScriptFastMath : MonoBehaviour
     /* -------------------------------------------------------------------------------------
      * returns a random number, within the given range
      */
-     private int RandNum(int min, int max)
+    private int RandNum(int min, int max)
     {
         System.Random r = new System.Random();
         return r.Next(min, max);
@@ -135,7 +135,7 @@ public class DisplayScriptFastMath : MonoBehaviour
     public String startGame()
     {
         // put in dun dun dun
-        return "Starting Fast Math Mini-Game";
+        return "<speak><voice name=\"Matthew\"> <say-as interpret-as=\"interjection\">dun dun dun</say-as> <break strength=\"medium\"/>  Starting Fast Math Mini-Game </voice></speak>";
     }
 
     /*
@@ -179,7 +179,7 @@ public class DisplayScriptFastMath : MonoBehaviour
     /*-------------------------------------------------------------------------------------
      * Updates the timer text if the time has passed a whole number
      */
-     void TimerUpdate(float t)
+    void TimerUpdate(float t)
     {
         TimerText.text = "Time: " + Math.Round(t).ToString();
     }
@@ -203,8 +203,8 @@ public class DisplayScriptFastMath : MonoBehaviour
 
         if (ansCorrectCount == 10)
         {
-            QuestionLabel.text = "Questions wrong: " + ansWrongCount.ToString() 
-                + '\n' + "Time: " + Math.Round(timer).ToString() 
+            QuestionLabel.text = "Questions wrong: " + ansWrongCount.ToString()
+                + '\n' + "Time: " + Math.Round(timer).ToString()
                 + '\n' + "Say 'Alexa, move to next game' to \n go to the next game.";
         }
 
