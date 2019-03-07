@@ -42,14 +42,7 @@ public class DisplayScriptFastMath : MonoBehaviour
          */
         public bool answerCorrect(int i)
         {
-            if (i == answer)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return i == answer;
         }
 
         /*
@@ -134,21 +127,55 @@ public class DisplayScriptFastMath : MonoBehaviour
 
     public String startGame()
     {
-        // put in dun dun dun
-        return "<speak><voice name=\"Matthew\"> <say-as interpret-as=\"interjection\">dun dun dun</say-as> <break strength=\"medium\"/>  Starting Fast Math Mini-Game </voice></speak>";
+        if (!startQuestions)
+        {
+            startQuestions = true;
+            currentQuestion = generateQuestion();
+            return "<speak><voice name=\"Matthew\"> <say-as interpret-as=\"interjection\">dun dun dun</say-as> <break strength=\"medium\"/>  Starting Fast Math Mini-Game </voice></speak>";
+        }
+        return "This game is already running";
+    }
+
+    public String onAnswer(string answer)
+    {
+        int ans;
+        if (int.TryParse(answer, out ans))
+        {
+            if (currentQuestion.answerCorrect(ans))
+            {
+                currentQuestion = generateQuestion();
+                ansCorrectCount++;
+                Score.text = "Score: " + ansCorrectCount.ToString();
+                if (ansCorrectCount == 10)
+                {
+                    QuestionLabel.text = "Questions wrong: " + ansWrongCount.ToString()
+                        + '\n' + "Time: " + Math.Round(timer).ToString()
+                        + '\n' + "Say 'Alexa, move to next game' to \n go to the next game.";
+                    startQuestions = false;
+                }
+
+                return "correct";
+            }
+        }
+        currentQuestion = generateQuestion();
+        ansWrongCount++;
+        ansCorrectCount = 0;
+        Score.text = "Score: 0";
+        return "Incorrect";
+    }
+
+    public string onNextGame()
+    {
+        return "On to the next game!";
     }
 
     /*
-     * This method runs the questions for the user to answer
-     */
-    private void runQuestions()
+    private Question newQuestion()
     {
         if (currentQuestion == null)
         {
             currentQuestion = generateQuestion();
         }
-        timer += Time.deltaTime;
-        TimerUpdate(timer);
 
         if (totalQuestions == ansCorrectCount + ansWrongCount)
         {
@@ -174,7 +201,7 @@ public class DisplayScriptFastMath : MonoBehaviour
             //QuestionLabel.text = "Wrong...Try Again.";
             currentQuestion = null;
         }
-    }
+    } */
 
     /*-------------------------------------------------------------------------------------
      * Updates the timer text if the time has passed a whole number
@@ -190,23 +217,18 @@ public class DisplayScriptFastMath : MonoBehaviour
      */
     void Update()
     {
-        // TODO: get user input from alexa here
-        if (startQuestions != true && Input.anyKey)
+        if (startQuestions)
         {
-            startQuestions = true;
+            timer += Time.deltaTime;
+            TimerUpdate(timer);
         }
-
-        if (ansCorrectCount < 10 && startQuestions == true)
-        {
-            runQuestions();
-        }
-
+        /*
         if (ansCorrectCount == 10)
         {
             QuestionLabel.text = "Questions wrong: " + ansWrongCount.ToString()
                 + '\n' + "Time: " + Math.Round(timer).ToString()
                 + '\n' + "Say 'Alexa, move to next game' to \n go to the next game.";
-        }
+        }*/
 
     } // end Update method
 } // end DisplayScriptFastMath class

@@ -68,10 +68,24 @@ public class Alexa : MonoBehaviour
                     string response = StartGame();
                     alexaManager.SendToAlexaSkill(response, null);
                     break;
+                case "MathGameAnswer":
+                    string answer = message["answer"] as string;
+                    alexaManager.SendToAlexaSkill(onMathAnswer(answer), null);
+                    break;
                 default:
                     break;
             }
         });
+    }
+
+    private string onMathAnswer(string answer)
+    {
+        DisplayScriptFastMath[] mathComp = FindObjectsOfType<DisplayScriptFastMath>();
+        if (mathComp.Length > 0)
+        {
+            return mathComp[0].onAnswer(answer);
+        }
+        return "Math answers not accepted at this time.";
     }
 
     private string StartGame()
@@ -86,7 +100,7 @@ public class Alexa : MonoBehaviour
         {
             return colorComp[0].startGame();
         }
-        return "";
+        return "Game can't be started at this time.";
     }
     private void SetAttributesCallback(SetSessionAttributesEventData eventData)
     {
