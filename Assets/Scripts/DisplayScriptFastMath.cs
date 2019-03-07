@@ -18,6 +18,7 @@ public class DisplayScriptFastMath : MonoBehaviour
     public int totalQuestions = 0;
     public float timer = 0.0f;
     Question currentQuestion = null;
+    bool gameEnd = false;
 
     /* -------------------------------------------------------------------------------------
      * Class holds information for the math problem
@@ -152,6 +153,7 @@ public class DisplayScriptFastMath : MonoBehaviour
                         + '\n' + "Time: " + Math.Round(timer).ToString()
                         + '\n' + "Say 'Alexa, move to next game' to \n go to the next game.";
                     startQuestions = false;
+                    gameEnd = true;
                 }
 
                 return "correct";
@@ -166,42 +168,12 @@ public class DisplayScriptFastMath : MonoBehaviour
 
     public string onNextGame()
     {
-        return "On to the next game!";
+        if (gameEnd)
+        {
+            return "On to the next game!";
+        }
+        return "You must complete this game before moving on!";
     }
-
-    /*
-    private Question newQuestion()
-    {
-        if (currentQuestion == null)
-        {
-            currentQuestion = generateQuestion();
-        }
-
-        if (totalQuestions == ansCorrectCount + ansWrongCount)
-        {
-            totalQuestions++;
-            //QuestionLabel.text = questions[RandNum(0, questions.Length)].getQuestion();
-            QuestionLabel.text = currentQuestion.getQuestion();
-        }
-
-        // if answer is correct
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            ansCorrectCount++;
-            //QuestionLabel.text = "Correct!";
-            Score.text = "Score: " + ansCorrectCount.ToString();
-            currentQuestion = null;
-        }
-        // if answer is not correct
-        else if (Input.GetKeyDown(KeyCode.S))
-        {
-            ansWrongCount++;
-            ansCorrectCount = 0;
-            Score.text = "Score: " + 0;
-            //QuestionLabel.text = "Wrong...Try Again.";
-            currentQuestion = null;
-        }
-    } */
 
     /*-------------------------------------------------------------------------------------
      * Updates the timer text if the time has passed a whole number
