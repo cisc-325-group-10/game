@@ -18,6 +18,7 @@ public class DisplayScriptColourMemory : MonoBehaviour
     public float colourTime = 1.0f;
     public float timer = 0.0f;
     private int counter = 0;
+    bool endGame = false;
 
     /* -------------------------------------------------------------------------------------
      * Start is called before the first frame update
@@ -28,12 +29,6 @@ public class DisplayScriptColourMemory : MonoBehaviour
         String sceneNum = SceneManager.GetActiveScene().name;
         Debug.Log(sceneNum);
     } // end Start method
-
-    public String startGame()
-    {
-        // put in dun dun dun
-        return "Starting Remember the Colours Mini-Game";
-    }
 
     /* -------------------------------------------------------------------------------------
      * returns a random number, corresponding to an index in our materials
@@ -115,7 +110,7 @@ public class DisplayScriptColourMemory : MonoBehaviour
      * plays the colour sequence when
      */
     void playColourSequence()
-     {
+    {
         if (counter <= colourNumOptions + 1)
         {
             timer += Time.deltaTime;
@@ -179,6 +174,28 @@ public class DisplayScriptColourMemory : MonoBehaviour
             initial = false;
         }
     } // end playColourSequence method
+
+    //TODO: fix this
+    public String startGame()
+    {
+        return "<speak><voice name=\"Matthew\"> <say-as interpret-as=\"interjection\">dun dun dun</say-as> <break strength=\"medium\"/>  Starting Colour Memory Mini-Game </voice></speak>";
+    }
+
+    //TODO: fix this
+    public String onAnswer(string answer1, string answer2, string answer3, string answer4, string answer5)
+    {
+        return "";
+    }
+
+    //TODO: FIX  THIS
+    public string onNextGame()
+    {
+        if (endGame)
+        {
+            return "On to the next game!";
+        }
+        return "Sorry, you have to finish this game first.";
+    }
 
     /* -------------------------------------------------------------------------------------
      * Update is called once per frame
