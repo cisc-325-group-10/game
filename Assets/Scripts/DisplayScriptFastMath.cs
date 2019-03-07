@@ -161,7 +161,7 @@ public class DisplayScriptFastMath : MonoBehaviour
         ansWrongCount++;
         ansCorrectCount = 0;
         Score.text = "Score: 0";
-        return "Incorrect";
+        return "Incorrect, are you even trying?";
     }
 
     public string onNextGame()
@@ -221,6 +221,10 @@ public class DisplayScriptFastMath : MonoBehaviour
         {
             timer += Time.deltaTime;
             TimerUpdate(timer);
+            if (currentQuestion != null)
+            {
+                QuestionLabel.text = currentQuestion.getQuestion();
+            }
         }
         /*
         if (ansCorrectCount == 10)
