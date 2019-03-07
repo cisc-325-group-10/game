@@ -126,6 +126,11 @@ public class DisplayScriptFastMath : MonoBehaviour
         //Debug.Log(sceneNum);
     } // end Start method
 
+    // INTERACTS WITH ALEXA
+    /*
+     * Called when the user says something along the lines of "Alexa, start the game"
+     *      "Alexa, start game"   
+     */
     public String startGame()
     {
         if (!startQuestions)
@@ -137,6 +142,11 @@ public class DisplayScriptFastMath : MonoBehaviour
         return "This game is already running";
     }
 
+    // INTERACTS WITH ALEXA
+    /*
+    * Called when the user says something along the lines of "Alexa, my answer is (answer)"
+    *      where (answer is the answer string passed into the function)   
+    */
     public String onAnswer(string answer)
     {
         int ans;
@@ -166,6 +176,11 @@ public class DisplayScriptFastMath : MonoBehaviour
         return "Incorrect, are you even trying?";
     }
 
+    // INTERACTS WITH ALEXA
+    /*
+    * Called when the user says something along the lines of "Alexa, move to the next game"
+    *      "Alexa, move on", "Alexa, next"   
+    */
     public string onNextGame()
     {
         if (gameEnd)
