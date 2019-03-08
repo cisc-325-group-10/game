@@ -14,7 +14,6 @@ public class DisplayScriptColourMemory : MonoBehaviour
     public string[] seenColours = new string[colourNumDisplayed];
 
     bool playColours = false;
-    bool initial = true;
     public float colourTime = 1.0f;
     public float timer = 0.0f;
     private int counter = 0;
@@ -37,7 +36,7 @@ public class DisplayScriptColourMemory : MonoBehaviour
     private int RandNum()
     {
         System.Random r = new System.Random();
-        return r.Next(0, colourNumDisplayed);
+        return r.Next(0, colourNumOptions);
     } // end RandNum method
 
     /* -------------------------------------------------------------------------------------
@@ -48,7 +47,7 @@ public class DisplayScriptColourMemory : MonoBehaviour
     {
         ColourLabel.text = (i + 1).ToString() + ". RED";
         ColourLabel.color = Color.red;
-        seenColours[i] = "RED";
+        seenColours[i] = "red";
     } // end ChangeToRed method
 
     /* -------------------------------------------------------------------------------------
@@ -59,7 +58,7 @@ public class DisplayScriptColourMemory : MonoBehaviour
     {
         ColourLabel.text = (i + 1).ToString() + ". WHITE";
         ColourLabel.color = Color.white;
-        seenColours[i] = "WHITE";
+        seenColours[i] = "white";
     } // end ChangeToWhite method
 
     /* -------------------------------------------------------------------------------------
@@ -70,7 +69,7 @@ public class DisplayScriptColourMemory : MonoBehaviour
     {
         ColourLabel.text = (i + 1).ToString() + ". YELLOW";
         ColourLabel.color = Color.yellow;
-        seenColours[i] = "YELLOW";
+        seenColours[i] = "yellow";
     } // end ChangeToYellow method
 
     /* -------------------------------------------------------------------------------------
@@ -81,7 +80,7 @@ public class DisplayScriptColourMemory : MonoBehaviour
     {
         ColourLabel.text = (i + 1).ToString() + ". GREEN";
         ColourLabel.color = Color.green;
-        seenColours[i] = "GREEN";
+        seenColours[i] = "green";
     } // end ChangeToGreen method
 
     /* -------------------------------------------------------------------------------------
@@ -92,7 +91,7 @@ public class DisplayScriptColourMemory : MonoBehaviour
     {
         ColourLabel.text = (i + 1).ToString() + ". BLUE";
         ColourLabel.color = Color.blue;
-        seenColours[i] = "BLUE";
+        seenColours[i] = "blue";
     } // end ChangeToBlue method
 
     /* -------------------------------------------------------------------------------------
@@ -103,7 +102,7 @@ public class DisplayScriptColourMemory : MonoBehaviour
     {
         ColourLabel.text = (i + 1).ToString() + ". GRAY";
         ColourLabel.color = Color.gray;
-        seenColours[i] = "GRAY";
+        seenColours[i] = "gray";
     } // end ChangeToGray method
 
     /* -------------------------------------------------------------------------------------
@@ -111,83 +110,95 @@ public class DisplayScriptColourMemory : MonoBehaviour
      */
     void playColourSequence()
     {
-        if (counter <= colourNumOptions + 1)
-        {
-            timer += Time.deltaTime;
-        }
-
-        // TODO: implement starting to change colours when 
-        //      the user indicates they are ready
+        // update time
+        timer += Time.deltaTime;
 
         // change the colour of the ColourLabel, and populate the coloursSeen
         //       array
-        if ((timer >= colourTime) && (counter < colourNumDisplayed + 1))
+        if ((timer >= colourTime) && (counter <= colourNumDisplayed))
         {
             int randNum = 0;
             randNum = RandNum();
-            if (randNum == 0)
+
+            switch (randNum)
             {
-                ChangeToRed(counter);
-            }
-            else if (randNum == 1)
-            {
-                ChangeToWhite(counter);
-            }
-            else if (randNum == 2)
-            {
-                ChangeToYellow(counter);
-            }
-            else if (randNum == 3)
-            {
-                ChangeToGreen(counter);
-            }
-            else if (randNum == 4)
-            {
-                ChangeToBlue(counter);
-            }
-            else
-            {
-                ChangeToGray(counter);
+                case 1:
+                    // white
+                    ChangeToWhite(counter);
+                    break;
+                case 2:
+                    // yellow
+                    ChangeToYellow(counter);
+                    break;
+                case 3:
+                    // green
+                    ChangeToGreen(counter);
+                    break;
+                case 4:
+                    // blue
+                    ChangeToBlue(counter);
+                    break;
+                case 5:
+                    // gray
+                    ChangeToGray(counter);
+                    break;
+                case 0:
+                default:
+                    // red
+                    ChangeToRed(counter);
+                    break;
             }
 
             timer = 0;
             counter++;
         }
-        else if ((timer >= colourTime) && (counter == colourNumDisplayed + 1))
+        else if (timer >= colourTime && counter > colourNumDisplayed)
         {
             ColourLabel.color = Color.white;
-            ColourLabel.text = "Repeat the colours";
+            ColourLabel.text = "Say 'Alexa, my answer is ________' to give your answer";
             counter++;
             playColours = false;
-
-            // EXTRA TESTING CODE: tests that seenColours is working
-            //string str = "";
-            //for (int i = 0; i < seenColours.Length; i++)
-            //{
-            //    str = str + seenColours[i] + " ";
-            //}
-            //
-            //ColourLabel.text = str;
         }
-        else if (counter > colourNumDisplayed + 1)
-        {
-            initial = false;
-        }
-    } // end playColourSequence method
+    } // end playColourSequence method 
 
-    //TODO: fix this
+    // INTERACTS WITH ALEXA
+    /*
+     * Called when the user says something along the lines of "Alexa, start the game"
+     *      "Alexa, start game"   
+     */
     public String startGame()
     {
+        playColours = true;
         return "<speak><voice name=\"Matthew\"> <say-as interpret-as=\"interjection\">dun dun dun</say-as> <break strength=\"medium\"/>  Starting Colour Memory Mini-Game </voice></speak>";
     }
 
-    //TODO: fix this
-    public String onAnswer(string answer1, string answer2, string answer3, string answer4, string answer5)
+    // INTERACTS WITH ALEXA
+    /*
+    * Called when the user gives a colourGame type answer 
+    * TODO: check on how the alexa formats these strings
+    */
+    public String onAnswer(string answer0, string answer1, string answer2, string answer3, string answer4)
     {
-        return "";
+        // if all answers are correct, move to end of game
+        //      if not, show a new set of colours
+        if (answer0 == seenColours[0] && 
+            answer1 == seenColours[1] && 
+            answer2 == seenColours[2] &&
+            answer3 == seenColours[3] &&
+            answer4 == seenColours[4])
+        {
+            endGame = true;
+            return "Correct!";
+        }
+        playColours = true;
+        return "Incorrect, lets try with a different set of colours";
     }
 
-    //TODO: FIX  THIS
+    // INTERACTS WITH ALEXA
+    /*
+    * Called when the user says something along the lines of "Alexa, move to the next game"
+    *      "Alexa, move on", "Alexa, next"   
+    */
     public string onNextGame()
     {
         if (endGame)
@@ -202,35 +213,18 @@ public class DisplayScriptColourMemory : MonoBehaviour
      */
     void Update()
     {
+        // TODO: Take this out once testing with alexa
         if (Input.anyKey)
         {
-            if (initial == true)
-            {
-                // TODO: update to get user input from Alexa
-                playColours = true;
-            }
-        }
+            playColours = true;
+        } 
 
-        // when the user indicates they need to see the colour sequence, play it and
-        //      update the coloursSeen array
+        // when the user needs to see the colours again play them
+        //      will either get an answer wrong or need to see the colours for the
+        //      first time
         if (playColours == true)
         {
             playColourSequence();
-        }
-
-        // TODO: get the user's inputs from Alexa
-        //      if they're correct, end
-        //      if not, give them a new colour sequence
-        if (initial == false)
-        {
-            // if the user is correct
-            // TODO: add alexa stuff here
-            ColourLabel.text = "CORRECT: say 'move to next room' to move to the next room";
-
-            // if the user in not correct
-            //      set playColours to true again
-            // TODO: add alexa stuff here
-            // ColourLabel.text = "INCORRECT: say 'try again' to try another colour sequence";
         }
 
     } // end Update method
