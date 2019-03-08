@@ -65,18 +65,45 @@ public class Alexa : MonoBehaviour
                     ConfirmSetup(result);
                     break;
                 case "StartRequest":
-                    string response = StartGame();
-                    alexaManager.SendToAlexaSkill(response, null);
+                    alexaManager.SendToAlexaSkill(StartGame(), null);
+                    break;
+                case "NextGameRequest":
+                    alexaManager.SendToAlexaSkill(NextGame(), null);
                     break;
                 case "MathGameAnswer":
                     string answer = message["answer"] as string;
                     alexaManager.SendToAlexaSkill(onMathAnswer(answer), null);
                     break;
+                case "ColorGameAnswer":
+                    string response = onColorAnswer(message["color1"] as string, message["color2"] as string, message["color3"] as string, message["color4"] as string, message["color5"] as string);
+                    alexaManager.SendToAlexaSkill(response, null);
+                    break;
+                case "HelpRequest":
+                    alexaManager.SendToAlexaSkill(onHelpRequest(), null);
+                    break;
                 default:
+                    alexaManager.SendToAlexaSkill("Unrecognized message type!", null);
                     break;
             }
         });
     }
+
+    private string onHelpRequest()
+    {
+        //TODO wire up contextual help
+        return "I have no help to offer at this time.";
+    }
+
+    private string onColorAnswer(string color1, string color2, string color3, string color4, string color5)
+    {
+        DisplayScriptColourMemory[] colorComp = FindObjectsOfType<DisplayScriptColourMemory>();
+        if (colorComp.Length > 0)
+        {
+            return colorComp[0].onAnswer(color1, color2, color3, color4, color5);
+        }
+        return "Color answers not accepted at this time.";
+    }
+
 
     private string onMathAnswer(string answer)
     {
@@ -88,6 +115,20 @@ public class Alexa : MonoBehaviour
         return "Math answers not accepted at this time.";
     }
 
+    private string NextGame()
+    {
+        DisplayScriptFastMath[] mathComp = FindObjectsOfType<DisplayScriptFastMath>();
+        if (mathComp.Length > 0)
+        {
+            return mathComp[0].onNextGame();
+        }
+        DisplayScriptColourMemory[] colorComp = FindObjectsOfType<DisplayScriptColourMemory>();
+        if (colorComp.Length > 0)
+        {
+            return colorComp[0].onNextGame();
+        }
+        return "Next game can't be started at this time.";
+    }
     private string StartGame()
     {
         DisplayScriptFastMath[] mathComp = FindObjectsOfType<DisplayScriptFastMath>();
