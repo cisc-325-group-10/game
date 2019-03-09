@@ -16,6 +16,7 @@ public class DisplayScriptColourMemory : MonoBehaviour
     bool playColours = false;
     public float colourTime = 1.0f;
     public float timer = 0.0f;
+    private bool resetTimer = false;
     private int counter = 0;
     bool endGame = false;
 
@@ -117,6 +118,7 @@ public class DisplayScriptColourMemory : MonoBehaviour
         //       array
         if ((timer >= colourTime) && (counter <= colourNumDisplayed))
         {
+            //resetTimer = false;
             int randNum = 0;
             randNum = RandNum();
 
@@ -158,6 +160,7 @@ public class DisplayScriptColourMemory : MonoBehaviour
             ColourLabel.text = "Say 'Alexa, my answer is ________' to give your answer";
             counter++;
             playColours = false;
+            resetTimer = true;
         }
     } // end playColourSequence method 
 
@@ -168,6 +171,7 @@ public class DisplayScriptColourMemory : MonoBehaviour
      */
     public String startGame()
     {
+        timer = 0;
         playColours = true;
         return "<speak><voice name=\"Matthew\"> <say-as interpret-as=\"interjection\">dun dun dun</say-as> <break strength=\"medium\"/>  Starting Colour Memory Mini-Game </voice></speak>";
     }
@@ -181,11 +185,11 @@ public class DisplayScriptColourMemory : MonoBehaviour
     {
         // if all answers are correct, move to end of game
         //      if not, show a new set of colours
-        if (answer0 == seenColours[0] && 
-            answer1 == seenColours[1] && 
-            answer2 == seenColours[2] &&
-            answer3 == seenColours[3] &&
-            answer4 == seenColours[4])
+        if (answer0.Equals(seenColours[0]) &&
+            answer1.Equals(seenColours[1]) &&
+            answer2.Equals(seenColours[2]) &&
+            answer3.Equals(seenColours[3]) &&
+            answer4.Equals(seenColours[4]))
         {
             endGame = true;
             return "Correct!";
@@ -205,7 +209,9 @@ public class DisplayScriptColourMemory : MonoBehaviour
         {
             return "On to the next game!";
         }
-        return "Sorry, you have to finish this game first.";
+        playColours = true; // TODO: we need to figure out how we want the game to handle this input
+                            //      when the user isn't finished the game
+        return "Sorry, you have to finish this game first. Let's try this again.";
     }
 
     /* -------------------------------------------------------------------------------------
@@ -213,17 +219,37 @@ public class DisplayScriptColourMemory : MonoBehaviour
      */
     void Update()
     {
-        // TODO: Take this out once testing with alexa
-        if (Input.anyKey)
+        // TESTING CODE:
+        /*
+        if (Input.GetKeyDown(KeyCode.W))
         {
-            playColours = true;
-        } 
+            String startString = startGame();
+            ColourLabel.text = startString;
+        }
+
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            String answerString = onAnswer("red","red","red","red","red");
+            ColourLabel.text = answerString;
+        }
+
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            String nextGameString = onNextGame();
+            ColourLabel.text = nextGameString;
+        } */
 
         // when the user needs to see the colours again play them
         //      will either get an answer wrong or need to see the colours for the
         //      first time
         if (playColours == true)
         {
+            if (resetTimer == true)
+            {
+                timer = 0;
+                counter = 0;
+                resetTimer = false;
+            }
             playColourSequence();
         }
 
