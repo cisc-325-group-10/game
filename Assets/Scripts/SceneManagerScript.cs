@@ -21,7 +21,8 @@ public class SceneManagerScript : MonoBehaviour
     {
         games.Add("FastMathMini-Game");
         games.Add("ColourMemoryMini-Game");
-        StartCoroutine(LoadScene(games[0]));
+        TotalTimerText.text = "Total Time: 0";
+        StartCoroutine(LoadScene(getRandGame()));
     }
 
     void TimerUpdate(float t)

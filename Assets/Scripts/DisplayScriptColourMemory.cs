@@ -9,7 +9,7 @@ public class DisplayScriptColourMemory : MonoBehaviour
 {
     // COLOURS USED: red, white, yellow, green, blue, gray/grey
     public Text ColourLabel;
-    public static int colourNumDisplayed = 4;
+    public static int colourNumDisplayed = 5;
     public static int colourNumOptions = 6; // if we add another colour option, update this
     public string[] seenColours = new string[colourNumDisplayed];
 
@@ -115,7 +115,7 @@ public class DisplayScriptColourMemory : MonoBehaviour
 
         // change the colour of the ColourLabel, and populate the coloursSeen
         //       array
-        if ((timer >= colourTime) && (counter <= colourNumDisplayed))
+        if ((timer >= colourTime) && (counter < colourNumDisplayed))
         {
             //resetTimer = false;
             int randNum = 0;
@@ -153,7 +153,7 @@ public class DisplayScriptColourMemory : MonoBehaviour
             timer = 0;
             counter++;
         }
-        else if (timer >= colourTime && counter > colourNumDisplayed)
+        else if (timer >= colourTime && counter >= colourNumDisplayed)
         {
             ColourLabel.color = Color.white;
             ColourLabel.text = "Say 'Alexa, the colours are ________' to give your answer";
@@ -172,6 +172,7 @@ public class DisplayScriptColourMemory : MonoBehaviour
     {
         timer = 0;
         playColours = true;
+        FindObjectOfType<SceneManagerScript>().timerGoing = false;
         return "<speak> <say-as interpret-as=\"interjection\">dun dun dun</say-as> <break strength=\"medium\"/>  Starting Colour Memory Mini-Game </speak>";
     }
 
@@ -191,6 +192,8 @@ public class DisplayScriptColourMemory : MonoBehaviour
             fixGray(answer4).Equals(seenColours[4]))
         {
             FindObjectOfType<SceneManagerScript>().gameEnd = true;
+            FindObjectOfType<SceneManagerScript>().timerGoing = false;
+            ColourLabel.text = "Correct! Say 'Alexa, move to next game' to go to the next game.";
             return "Correct!";
         }
         playColours = true;
