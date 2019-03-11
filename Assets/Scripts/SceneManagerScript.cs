@@ -58,11 +58,11 @@ public class SceneManagerScript : MonoBehaviour
     public IEnumerator switchScene()
     {
         yield return SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
-        if (gamesPlayed < gamesToPlay)
+        if (gamesPlayed < gamesToPlay-1)
         {
             LevelText.text = "Level: " + (gamesPlayed + 1);
+            gamesPlayed = gamesPlayed + 1;
             yield return LoadScene(getRandGame());
-            gamesPlayed++;
         }
         else
         {
