@@ -9,7 +9,7 @@ public class DisplayScriptColourMemory : MonoBehaviour
 {
     // COLOURS USED: red, white, yellow, green, blue, gray/grey
     public Text ColourLabel;
-    public static int colourNumDisplayed = 4;
+    public static int colourNumDisplayed = 5;
     public static int colourNumOptions = 6; // if we add another colour option, update this
     public string[] seenColours = new string[colourNumDisplayed];
 
@@ -18,7 +18,6 @@ public class DisplayScriptColourMemory : MonoBehaviour
     public float timer = 0.0f;
     private bool resetTimer = false;
     private int counter = 0;
-    bool endGame = false;
 
     /* -------------------------------------------------------------------------------------
      * Start is called before the first frame update
@@ -116,7 +115,7 @@ public class DisplayScriptColourMemory : MonoBehaviour
 
         // change the colour of the ColourLabel, and populate the coloursSeen
         //       array
-        if ((timer >= colourTime) && (counter <= colourNumDisplayed))
+        if ((timer >= colourTime) && (counter < colourNumDisplayed))
         {
             //resetTimer = false;
             int randNum = 0;
@@ -154,10 +153,10 @@ public class DisplayScriptColourMemory : MonoBehaviour
             timer = 0;
             counter++;
         }
-        else if (timer >= colourTime && counter > colourNumDisplayed)
+        else if (timer >= colourTime && counter >= colourNumDisplayed)
         {
             ColourLabel.color = Color.white;
-            ColourLabel.text = "Say 'Alexa, my answer is ________' to give your answer";
+            ColourLabel.text = "Say 'Alexa, the colours are ________' to give your answer";
             counter++;
             playColours = false;
             resetTimer = true;
@@ -173,7 +172,8 @@ public class DisplayScriptColourMemory : MonoBehaviour
     {
         timer = 0;
         playColours = true;
-        return "<speak><voice name=\"Matthew\"> <say-as interpret-as=\"interjection\">dun dun dun</say-as> <break strength=\"medium\"/>  Starting Colour Memory Mini-Game </voice></speak>";
+        FindObjectOfType<SceneManagerScript>().timerGoing = false;
+        return "<speak> <say-as interpret-as=\"interjection\">dun dun dun</say-as> <break strength=\"medium\"/>  Starting Colour Memory Mini-Game </speak>";
     }
 
     // INTERACTS WITH ALEXA
@@ -182,36 +182,34 @@ public class DisplayScriptColourMemory : MonoBehaviour
     * TODO: check on how the alexa formats these strings
     */
     public String onAnswer(string answer0, string answer1, string answer2, string answer3, string answer4)
-    {
+    { 
         // if all answers are correct, move to end of game
         //      if not, show a new set of colours
-        if (answer0.Equals(seenColours[0]) &&
-            answer1.Equals(seenColours[1]) &&
-            answer2.Equals(seenColours[2]) &&
-            answer3.Equals(seenColours[3]) &&
-            answer4.Equals(seenColours[4]))
+        if (fixGray(answer0).Equals(seenColours[0]) &&
+            fixGray(answer1).Equals(seenColours[1]) &&
+            fixGray(answer2).Equals(seenColours[2]) &&
+            fixGray(answer3).Equals(seenColours[3]) &&
+            fixGray(answer4).Equals(seenColours[4]))
         {
-            endGame = true;
+            FindObjectOfType<SceneManagerScript>().gameEnd = true;
+            FindObjectOfType<SceneManagerScript>().timerGoing = false;
+            ColourLabel.text = "Correct! Say 'Alexa, move to next game' to go to the next game.";
             return "Correct!";
         }
         playColours = true;
         return "Incorrect, lets try with a different set of colours";
     }
 
-    // INTERACTS WITH ALEXA
     /*
-    * Called when the user says something along the lines of "Alexa, move to the next game"
-    *      "Alexa, move on", "Alexa, next"   
-    */
-    public string onNextGame()
+     * Fixes any answers that are grey/gray
+     */
+     private String fixGray(string s)
     {
-        if (endGame)
+        if (s == "grey")
         {
-            return "On to the next game!";
+            s = "gray";
         }
-        playColours = true; // TODO: we need to figure out how we want the game to handle this input
-                            //      when the user isn't finished the game
-        return "Sorry, you have to finish this game first. Let's try this again.";
+        return s;
     }
 
     /* -------------------------------------------------------------------------------------
@@ -231,12 +229,6 @@ public class DisplayScriptColourMemory : MonoBehaviour
         {
             String answerString = onAnswer("red","red","red","red","red");
             ColourLabel.text = answerString;
-        }
-
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            String nextGameString = onNextGame();
-            ColourLabel.text = nextGameString;
         } */
 
         // when the user needs to see the colours again play them
