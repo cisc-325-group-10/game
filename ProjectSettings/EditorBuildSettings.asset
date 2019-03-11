@@ -14,4 +14,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ColourMemoryMini-Game.unity
     guid: ab5579ea5877e44409bf85c1f0dec6ed
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: d3b8f143f4cdd477785266ee03c84085
+  - enabled: 1
+    path: Assets/Scenes/TicTacToe.unity
+    guid: aef88ad4fa86a441d91961f6e58a4df1
   m_configObjects: {}

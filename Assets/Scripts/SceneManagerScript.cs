@@ -14,7 +14,8 @@ public class SceneManagerScript : MonoBehaviour
     {
         games.Add("FastMathMini-Game");
         games.Add("ColourMemoryMini-Game");
-        StartCoroutine(LoadScene(games[0]));
+        games.Add("TicTacToe1");
+        StartCoroutine(LoadScene(games[2]));
     }
 
     /* -------------------------------------------------------------------------------------
@@ -44,8 +45,19 @@ public class SceneManagerScript : MonoBehaviour
 
 
     // Update is called once per frame
-    void Update()
+    public IEnumerator bounceTicTacToe()
     {
-
+        Scene me = SceneManager.GetActiveScene();
+        if (me.name.EndsWith("1"))
+        {
+            yield return LoadScene("TicTacToe2");
+        }
+        else {
+            yield return LoadScene("TicTacToe1");
+        }
+        
+        yield return SceneManager.UnloadSceneAsync(me);
+        
     }
+
 }
