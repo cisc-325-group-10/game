@@ -157,7 +157,7 @@ public class DisplayScriptFastMath : MonoBehaviour
                 currentQuestion = generateQuestion();
                 ansCorrectCount++;
                 Score.text = "Score: " + ansCorrectCount.ToString();
-                if (ansCorrectCount == 5)
+                if (ansCorrectCount == 2)
                 {
                     QuestionLabel.text = "Questions wrong: " + ansWrongCount.ToString()
                         + '\n' + "Time: " + Math.Round(timer).ToString()
