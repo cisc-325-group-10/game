@@ -18,7 +18,6 @@ public class DisplayScriptFastMath : MonoBehaviour
     public int totalQuestions = 0;
     public float timer = 0.0f;
     Question currentQuestion = null;
-    bool gameEnd = false;
 
     /* -------------------------------------------------------------------------------------
      * Class holds information for the math problem
@@ -58,9 +57,9 @@ public class DisplayScriptFastMath : MonoBehaviour
     /* -------------------------------------------------------------------------------------
      * returns a random number, within the given range
      */
+    System.Random r = new System.Random();
     private int RandNum(int min, int max)
     {
-        System.Random r = new System.Random();
         return r.Next(min, max);
     }
 
@@ -137,7 +136,8 @@ public class DisplayScriptFastMath : MonoBehaviour
         {
             startQuestions = true;
             currentQuestion = generateQuestion();
-            return "<speak><voice name=\"Matthew\"> <say-as interpret-as=\"interjection\">dun dun dun</say-as> <break strength=\"medium\"/>  Starting Fast Math Mini-Game </voice></speak>";
+            FindObjectOfType<SceneManagerScript>().timerGoing = true;
+            return "<speak> <say-as interpret-as=\"interjection\">dun dun dun</say-as> <break strength=\"medium\"/>  Starting Fast Math Mini-Game </speak>";
         }
         return "This game is already running";
     }
@@ -157,13 +157,15 @@ public class DisplayScriptFastMath : MonoBehaviour
                 currentQuestion = generateQuestion();
                 ansCorrectCount++;
                 Score.text = "Score: " + ansCorrectCount.ToString();
-                if (ansCorrectCount == 10)
+                if (ansCorrectCount == 5)
                 {
                     QuestionLabel.text = "Questions wrong: " + ansWrongCount.ToString()
                         + '\n' + "Time: " + Math.Round(timer).ToString()
                         + '\n' + "Say 'Alexa, move to next game' to \n go to the next game.";
                     startQuestions = false;
-                    gameEnd = true;
+                    FindObjectOfType<SceneManagerScript>().timerGoing = false;
+                    FindObjectOfType<SceneManagerScript>().gameEnd = true;
+
                 }
 
                 return "correct";
@@ -174,20 +176,6 @@ public class DisplayScriptFastMath : MonoBehaviour
         ansCorrectCount = 0;
         Score.text = "Score: 0";
         return "Incorrect, are you even trying?";
-    }
-
-    // INTERACTS WITH ALEXA
-    /*
-    * Called when the user says something along the lines of "Alexa, move to the next game"
-    *      "Alexa, move on", "Alexa, next"   
-    */
-    public string onNextGame()
-    {
-        if (gameEnd)
-        {
-            return "On to the next game!";
-        }
-        return "You must complete this game before moving on!";
     }
 
     /*-------------------------------------------------------------------------------------
@@ -206,13 +194,14 @@ public class DisplayScriptFastMath : MonoBehaviour
     {
         if (startQuestions)
         {
-            timer += Time.deltaTime;
-            TimerUpdate(timer);
+            //timer += Time.deltaTime;
+            //TimerUpdate(timer);
             if (currentQuestion != null)
             {
                 QuestionLabel.text = currentQuestion.getQuestion();
             }
         }
+
         /*
         if (ansCorrectCount == 10)
         {

@@ -117,17 +117,7 @@ public class Alexa : MonoBehaviour
 
     private string NextGame()
     {
-        DisplayScriptFastMath[] mathComp = FindObjectsOfType<DisplayScriptFastMath>();
-        if (mathComp.Length > 0)
-        {
-            return mathComp[0].onNextGame();
-        }
-        DisplayScriptColourMemory[] colorComp = FindObjectsOfType<DisplayScriptColourMemory>();
-        if (colorComp.Length > 0)
-        {
-            return colorComp[0].onNextGame();
-        }
-        return "Next game can't be started at this time.";
+        return FindObjectOfType<SceneManagerScript>().onNextGame();
     }
     private string StartGame()
     {
