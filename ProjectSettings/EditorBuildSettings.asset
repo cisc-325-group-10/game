@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ColourMemoryMini-Game.unity
     guid: ab5579ea5877e44409bf85c1f0dec6ed
+  - enabled: 1
+    path: Assets/Scenes/GameEndScene.unity
+    guid: 4e3f70cc66e49439b88feba4bf75fdd2
   m_configObjects: {}

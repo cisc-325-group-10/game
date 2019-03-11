@@ -10,11 +10,15 @@ public class SceneManagerScript : MonoBehaviour
     // games: add more mini game names when we have more
     //string[] games = { "FastMathMini-Game", "ColourMemoryMini-Game" };
     List<string> games = new List<string>();
+    string endScene = "GameEndScene";
 
     public bool gameEnd = true;
     public Text TotalTimerText;
+    public Text LevelText;
     public float timer = 0.0f;
     public bool timerGoing = false;
+    private int gamesToPlay = 2; // NOTE: make sure this number is always <= than the # of mini-games we have implemented
+    private int gamesPlayed = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -22,6 +26,7 @@ public class SceneManagerScript : MonoBehaviour
         games.Add("FastMathMini-Game");
         games.Add("ColourMemoryMini-Game");
         TotalTimerText.text = "Total Time: 0";
+        LevelText.text = "Level: 1";
         StartCoroutine(LoadScene(getRandGame()));
     }
 
@@ -52,7 +57,13 @@ public class SceneManagerScript : MonoBehaviour
     public IEnumerator switchScene()
     {
         yield return SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
-        yield return LoadScene(getRandGame());
+        if (gamesPlayed < gamesToPlay)
+        {
+            LevelText.text = "Level: " + (gamesPlayed + 1);
+            yield return LoadScene(getRandGame());
+            gamesPlayed++;
+        }
+        yield return LoadScene(endScene);
     }
 
     // INTERACTS WITH ALEXA
