@@ -63,7 +63,10 @@ public class SceneManagerScript : MonoBehaviour
             yield return LoadScene(getRandGame());
             gamesPlayed++;
         }
-        yield return LoadScene(endScene);
+        else
+        {
+            yield return LoadScene(endScene);
+        }
     }
 
     // INTERACTS WITH ALEXA
