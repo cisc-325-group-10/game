@@ -35,7 +35,7 @@ public class CellScript : MonoBehaviour {
 		infoCell = '_';
 	}
 
-	IEnumerator setPlayerTurn() {
+	public IEnumerator setPlayerTurn() {
 		O.SetActive (true);
 		infoCell = 'O';
 		gameManager.GetComponent<GameManager> ().isPlayerTurn = false;

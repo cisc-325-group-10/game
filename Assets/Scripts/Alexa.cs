@@ -5,6 +5,8 @@ using Amazon;
 using Amazon.DynamoDBv2.Model;
 using AmazonsAlexa.Unity.AlexaCommunicationModule;
 using UnityEngine.SceneManagement;
+using System;
+
 public class Alexa : MonoBehaviour
 {
 
@@ -81,12 +83,27 @@ public class Alexa : MonoBehaviour
                 case "HelpRequest":
                     alexaManager.SendToAlexaSkill(onHelpRequest(), null);
                     break;
+                case "TicTacToeAnswer":
+                    string position = message["position"] as string;
+                    alexaManager.SendToAlexaSkill(onTicTacToe(position), null);
+                    break;
                 default:
                     alexaManager.SendToAlexaSkill("Unrecognized message type!", null);
                     break;
             }
         });
     }
+
+    private object onTicTacToe(string position)
+    {
+        
+            GameManager[] manager = FindObjectsOfType<GameManager>();
+            if (manager.Length > 0)
+            {
+                return manager[0].onPlayerCommand(position);
+            }
+            return "Tic tac toe positions not accepted at this time.";
+        }
 
     private string onHelpRequest()
     {

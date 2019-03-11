@@ -17,4 +17,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/GameEndScene.unity
     guid: 4e3f70cc66e49439b88feba4bf75fdd2
+  - enabled: 1
+    path: Assets/Scenes/TicTacToe1.unity
+    guid: aef88ad4fa86a441d91961f6e58a4df1
+  - enabled: 1
+    path: Assets/Scenes/TicTacToe2.unity
+    guid: 658f7d0f6731e1d4981541192b6f2e2a
   m_configObjects: {}

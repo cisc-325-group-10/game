@@ -30,6 +30,29 @@ public class GameManager : MonoBehaviour {
 		turnText.text = "Player";
 	}
 
+
+    public string onPlayerCommand(string position) {
+        if (isEnd) {
+            return "no more moves can be made";
+        }
+        int ans;
+        if (int.TryParse(position, out ans))
+        {
+            if (ans > 0 && ans < 10) {
+                if (!isPlayerTurn) {
+                   return "It's not your turn";
+                }
+                CellScript cell = cells[ans - 1].GetComponent<CellScript>();
+                if (cell.infoCell == '_') {
+                    StartCoroutine(cell.setPlayerTurn());
+                    return "Move made";
+                }
+                
+            }
+        }
+            return "not a valid move";
+    }
+
 	public void restart() {
         if (!dead) {
             dead = true;
@@ -38,16 +61,10 @@ public class GameManager : MonoBehaviour {
         
 	}
 
-	public void returnMenu() {
-		SceneManager.LoadScene (0);
-	}
-
 	// Update is called once per frame
 	void Update () {
 		if (turnText.text == "") {
 			isEnd = true;
-            restart();
-			return;
 		}
 		if (isPlayerTurn) {
 			turnText.text = "Player";
@@ -211,12 +228,14 @@ public class GameManager : MonoBehaviour {
 	public void checkWinPlayerTurn() {
 		int check = checkPlayerWinLose ();
 		if (check == 1) {
-			winLose.text = "YOU WIN";
-			turnText.text = "";
-		} else if (check == 0) {
+			winLose.text = "YOU WIN, Say Alexa, next game to move on!";
+            FindObjectOfType<SceneManagerScript>().gameEnd = true;
+            turnText.text = "";
+        } else if (check == 0) {
 			winLose.text = "DRAW";
 			turnText.text = "";
-		}
+            restart();
+        }
 	}
 
 	IEnumerator setXO(int indexCPU) {
@@ -233,6 +252,7 @@ public class GameManager : MonoBehaviour {
 
 			winLose.text = "DRAW";
 			turnText.text = "";
-		}
+            restart();
+        }
 	}
 }
