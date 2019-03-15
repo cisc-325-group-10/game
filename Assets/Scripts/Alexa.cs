@@ -107,8 +107,17 @@ public class Alexa : MonoBehaviour
 
     private string onHelpRequest()
     {
-        //TODO wire up contextual help
-        return "I have no help to offer at this time.";
+        SceneManagerScript manager = FindObjectOfType<SceneManagerScript>();
+        if (manager.gameEnd)
+        {
+            return "Say Next game when you're ready to move to the next game";
+        }
+        DisplayScriptFastMath[] mathComp = FindObjectsOfType<DisplayScriptFastMath>();
+        if (mathComp.Length > 0)
+        {
+            return mathComp[0].onHelpRequest();
+        }
+        return "No contextual help available at this time.";
     }
 
     private string onColorAnswer(string color1, string color2, string color3, string color4, string color5)

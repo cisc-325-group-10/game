@@ -24,11 +24,11 @@ public class SceneManagerScript : MonoBehaviour
     void Start()
     {
         games.Add("FastMathMini-Game");
-        games.Add("ColourMemoryMini-Game");
-        games.Add("TicTacToe1");
+        //games.Add("ColourMemoryMini-Game");
+        //games.Add("TicTacToe1");
         TotalTimerText.text = "Total Time: 0";
         LevelText.text = "Level: 1";
-        StartCoroutine(LoadScene(getRandGame()));
+        StartCoroutine(LoadScene(games[0]));
     }
 
     void TimerUpdate(float t)

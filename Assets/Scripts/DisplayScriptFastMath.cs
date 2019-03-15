@@ -142,6 +142,16 @@ public class DisplayScriptFastMath : MonoBehaviour
         return "This game is already running";
     }
 
+    public String onHelpRequest()
+    {
+        if (!startQuestions)
+        {
+            return "Say start game when you're ready to begin playing.";
+        }
+        string question = currentQuestion.getQuestion();
+        return "<speak>Say My answer is <break time=\"500ms\"/> followed by your answer to tell me your answer to the question</speak>";
+    }
+
     // INTERACTS WITH ALEXA
     /*
     * Called when the user says something along the lines of "Alexa, my answer is (answer)"
