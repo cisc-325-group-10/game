@@ -120,7 +120,7 @@ public class DisplayScriptFastMath : MonoBehaviour
      */
     void Start()
     {
-        QuestionLabel.text = "Say 'Start the game' to begin";
+        //QuestionLabel.text = "Say 'Start the game' to begin";
         //String sceneNum = SceneManager.GetActiveScene().name;
         //Debug.Log(sceneNum);
     } // end Start method
@@ -137,7 +137,7 @@ public class DisplayScriptFastMath : MonoBehaviour
             startQuestions = true;
             currentQuestion = generateQuestion();
             FindObjectOfType<SceneManagerScript>().timerGoing = true;
-            return "<speak> <say-as interpret-as=\"interjection\">dun dun dun</say-as> <break strength=\"medium\"/>  Starting Fast Math Mini-Game </speak>";
+            return "<speak> <say-as interpret-as=\"interjection\">dun dun dun</say-as> <break strength=\"medium\"/>  Starting Fast Math Mini-Game. You must get 10 questions right in a row in order to with this game and move on. Please answer these math questions as they are given to you by saying my answer is <break time=\"500ms\"/> followed by your answer.</speak>";
         }
         return "This game is already running";
     }
@@ -166,26 +166,26 @@ public class DisplayScriptFastMath : MonoBehaviour
             {
                 currentQuestion = generateQuestion();
                 ansCorrectCount++;
-                Score.text = "Score: " + ansCorrectCount.ToString();
+                //Score.text = "Score: " + ansCorrectCount.ToString();
+
                 if (ansCorrectCount == 2)
                 {
-                    QuestionLabel.text = "Questions wrong: " + ansWrongCount.ToString()
-                        + '\n' + "Time: " + Math.Round(timer).ToString()
-                        + '\n' + "Say 'Alexa, move to next game' to \n go to the next game.";
+                    //QuestionLabel.text = "Questions wrong: " + ansWrongCount.ToString()
+                        //+ '\n' + "Say 'Alexa, move to next game' to \n go to the next game.";
                     startQuestions = false;
                     FindObjectOfType<SceneManagerScript>().timerGoing = false;
                     FindObjectOfType<SceneManagerScript>().gameEnd = true;
-
+                    return "Good job! You got 10 questions right in a row. You finished with " + ansWrongCount.ToString() + " questions wrong. Say move on to play the next game.";
                 }
 
-                return "correct";
+                return "correct, your score is " + ansCorrectCount.ToString();
             }
         }
         currentQuestion = generateQuestion();
         ansWrongCount++;
         ansCorrectCount = 0;
-        Score.text = "Score: 0";
-        return "Incorrect, are you even trying?";
+       //Score.text = "Score: 0";
+        return "Incorrect, are you even trying? your score was reset to 0";
     }
 
     /*-------------------------------------------------------------------------------------

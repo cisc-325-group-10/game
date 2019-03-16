@@ -14,8 +14,10 @@ public class DisplayScriptColourMemory : MonoBehaviour
     public string[] seenColours = new string[colourNumDisplayed];
 
     bool playColours = false;
+    bool gameStarted = false;
     public float colourTime = 1.0f;
     public float timer = 0.0f;
+    public float waitTimer = 0.0f;
     private bool resetTimer = false;
     private int counter = 0;
 
@@ -24,9 +26,9 @@ public class DisplayScriptColourMemory : MonoBehaviour
      */
     void Start()
     {
-        ColourLabel.text = "Say 'Start' to begin";
-        String sceneNum = SceneManager.GetActiveScene().name;
-        Debug.Log(sceneNum);
+        //ColourLabel.text = "Say 'Start' to begin playing.";
+        //String sceneNum = SceneManager.GetActiveScene().name;
+        //Debug.Log(sceneNum);
     } // end Start method
 
     /* -------------------------------------------------------------------------------------
@@ -171,9 +173,23 @@ public class DisplayScriptColourMemory : MonoBehaviour
     public String startGame()
     {
         timer = 0;
-        playColours = true;
-        FindObjectOfType<SceneManagerScript>().timerGoing = false;
-        return "<speak> <say-as interpret-as=\"interjection\">dun dun dun</say-as> <break strength=\"medium\"/>  Starting Colour Memory Mini-Game </speak>";
+        if (!gameStarted)
+        {
+            gameStarted = true;
+            playColours = true;
+            FindObjectOfType<SceneManagerScript>().timerGoing = false;
+            return "<speak> <say-as interpret-as=\"interjection\">dun dun dun</say-as> <break strength=\"medium\"/>  Starting Colour Memory Mini-Game. A series of colours will be displayed on the screen. Remember them and repeat them back by saying the colours are <break time=\"500ms\"/> and then the series of colours.</speak>";
+        }
+        return "This game is already running";
+    }
+
+    public String onHelpRequest()
+    {
+        if (!gameStarted)
+        {
+            return "Say start game when you're ready to begin playing.";
+        }
+        return "<speak>Say the colours are <break time=\"500ms\"/> followed by the sequence of colours you were shown.</speak>";
     }
 
     // INTERACTS WITH ALEXA
@@ -193,8 +209,8 @@ public class DisplayScriptColourMemory : MonoBehaviour
         {
             FindObjectOfType<SceneManagerScript>().gameEnd = true;
             FindObjectOfType<SceneManagerScript>().timerGoing = false;
-            ColourLabel.text = "Correct! Say 'Alexa, move to next game' to go to the next game.";
-            return "Correct!";
+            ColourLabel.text = "Correct! Say 'Move on' to go to the next game.";
+            return "Correct! say move on";
         }
         playColours = true;
         return "Incorrect, lets try with a different set of colours";

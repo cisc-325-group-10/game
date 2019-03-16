@@ -23,12 +23,12 @@ public class SceneManagerScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        games.Add("FastMathMini-Game");
-        //games.Add("ColourMemoryMini-Game");
+       //games.Add("FastMathMini-Game");
+        games.Add("ColourMemoryMini-Game");
         //games.Add("TicTacToe1");
-        TotalTimerText.text = "Total Time: 0";
-        LevelText.text = "Level: 1";
-        StartCoroutine(LoadScene(games[0]));
+        //TotalTimerText.text = "Total Time: 0";
+        //LevelText.text = "Level: 1";
+        StartCoroutine(LoadScene(getRandGame()));
     }
 
     void TimerUpdate(float t)
@@ -60,7 +60,7 @@ public class SceneManagerScript : MonoBehaviour
         yield return SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
         if (gamesPlayed < gamesToPlay-1)
         {
-            LevelText.text = "Level: " + (gamesPlayed + 1);
+            //LevelText.text = "Level: " + (gamesPlayed + 1);
             gamesPlayed = gamesPlayed + 1;
             yield return LoadScene(getRandGame());
         }
@@ -81,7 +81,7 @@ public class SceneManagerScript : MonoBehaviour
         {
             gameEnd = false;
             StartCoroutine(switchScene());
-            return "On to the next game!";
+            return "On to the next game! Say start game to begin playing.";
         }
         return "You must complete this game before moving on!";
     }
