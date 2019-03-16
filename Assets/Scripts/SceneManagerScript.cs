@@ -17,13 +17,13 @@ public class SceneManagerScript : MonoBehaviour
     public Text LevelText;
     public float timer = 0.0f;
     public bool timerGoing = false;
-    private int gamesToPlay = 2; // NOTE: make sure this number is always <= than the # of mini-games we have implemented
+    private int gamesToPlay = 1; // NOTE: make sure this number is always <= than the # of mini-games we have implemented
     private int gamesPlayed = 0;
 
     // Start is called before the first frame update
     void Start()
     {
-       //games.Add("FastMathMini-Game");
+        games.Add("FastMathMini-Game");
         games.Add("ColourMemoryMini-Game");
         //games.Add("TicTacToe1");
         //TotalTimerText.text = "Total Time: 0";

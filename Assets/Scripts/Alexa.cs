@@ -39,7 +39,6 @@ public class Alexa : MonoBehaviour
         alexaManager.SetSessionAttributes(attributes, SetAttributesCallback);
     }
 
-
     private void OnAlexaMessage(HandleMessageEventData eventData)
     {
         //Listen for new messages from the Alexa skill
@@ -145,6 +144,7 @@ public class Alexa : MonoBehaviour
     {
         return FindObjectOfType<SceneManagerScript>().onNextGame();
     }
+
     private string StartGame()
     {
         DisplayScriptFastMath[] mathComp = FindObjectsOfType<DisplayScriptFastMath>();

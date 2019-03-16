@@ -17,9 +17,10 @@ public class DisplayScriptColourMemory : MonoBehaviour
     bool gameStarted = false;
     public float colourTime = 1.0f;
     public float timer = 0.0f;
-    public float waitTimer = 0.0f;
+    //public float waitTimer = 0.0f;
+    //public float waitTimerValue = 6.0f;
     private bool resetTimer = false;
-    private int counter = 0;
+    private int counter = -12;
 
     /* -------------------------------------------------------------------------------------
      * Start is called before the first frame update
@@ -123,6 +124,11 @@ public class DisplayScriptColourMemory : MonoBehaviour
             int randNum = 0;
             randNum = RandNum();
 
+            if (counter < 0)
+            {
+                randNum = 7;
+            }
+
             switch (randNum)
             {
                 case 1:
@@ -144,6 +150,9 @@ public class DisplayScriptColourMemory : MonoBehaviour
                 case 5:
                     // gray
                     ChangeToGray(counter);
+                    break;
+                case 7:
+                    ColourLabel.text = "";
                     break;
                 case 0:
                 default:
@@ -210,7 +219,7 @@ public class DisplayScriptColourMemory : MonoBehaviour
             FindObjectOfType<SceneManagerScript>().gameEnd = true;
             FindObjectOfType<SceneManagerScript>().timerGoing = false;
             ColourLabel.text = "Correct! Say 'Move on' to go to the next game.";
-            return "Correct! say move on";
+            return "Correct! say move on to go to the next game";
         }
         playColours = true;
         return "Incorrect, lets try with a different set of colours";
@@ -255,7 +264,7 @@ public class DisplayScriptColourMemory : MonoBehaviour
             if (resetTimer == true)
             {
                 timer = 0;
-                counter = 0;
+                counter = -4;
                 resetTimer = false;
             }
             playColourSequence();
