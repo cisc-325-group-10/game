@@ -167,7 +167,8 @@ public class DisplayScriptColourMemory : MonoBehaviour
         else if (timer >= colourTime && counter >= colourNumDisplayed)
         {
             ColourLabel.color = Color.white;
-            ColourLabel.text = "Say 'Alexa, the colours are ________' to give your answer";
+            //ColourLabel.text = "Say 'Alexa, the colours are ________' to give your answer";
+            ColourLabel.text = "";
             counter++;
             playColours = false;
             resetTimer = true;
@@ -218,7 +219,8 @@ public class DisplayScriptColourMemory : MonoBehaviour
         {
             FindObjectOfType<SceneManagerScript>().gameEnd = true;
             FindObjectOfType<SceneManagerScript>().timerGoing = false;
-            ColourLabel.text = "Correct! Say 'Move on' to go to the next game.";
+            //ColourLabel.text = "Correct! Say 'Move on' to go to the next game.";
+            ColourLabel.text = "";
             return "Correct! say move on to go to the next game";
         }
         playColours = true;

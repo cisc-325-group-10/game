@@ -17,7 +17,7 @@ public class SceneManagerScript : MonoBehaviour
     public Text LevelText;
     public float timer = 0.0f;
     public bool timerGoing = false;
-    private int gamesToPlay = 1; // NOTE: make sure this number is always <= than the # of mini-games we have implemented
+    private int gamesToPlay = 2; // NOTE: make sure this number is always <= than the # of mini-games we have implemented
     private int gamesPlayed = 0;
 
     // Start is called before the first frame update
@@ -58,10 +58,10 @@ public class SceneManagerScript : MonoBehaviour
     public IEnumerator switchScene()
     {
         yield return SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
-        if (gamesPlayed < gamesToPlay-1)
+        if (gamesPlayed < gamesToPlay)
         {
             //LevelText.text = "Level: " + (gamesPlayed + 1);
-            gamesPlayed = gamesPlayed + 1;
+            //gamesPlayed = gamesPlayed + 1;
             yield return LoadScene(getRandGame());
         }
         else
@@ -80,7 +80,12 @@ public class SceneManagerScript : MonoBehaviour
         if (gameEnd)
         {
             gameEnd = false;
+            gamesPlayed = gamesPlayed + 1;
             StartCoroutine(switchScene());
+            if (gamesPlayed >= gamesToPlay)
+            {
+                return "Congratulations! you win!";
+            }
             return "On to the next game! Say start game to begin playing.";
         }
         return "You must complete this game before moving on!";

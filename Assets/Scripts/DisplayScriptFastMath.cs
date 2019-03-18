@@ -26,14 +26,20 @@ public class DisplayScriptFastMath : MonoBehaviour
     {
         String question;
         int answer;
+        public int num1;
+        public int num2;
+        public string operation;
 
         /* -----------------------------------------------------------------------
          * Constructor method for Question class
          */
-        public Question(String q, int a)
+        public Question(String q, int a, int n1, int n2, string o)
         {
             question = q;
             answer = a;
+            num1 = n1;
+            num2 = n2;
+            operation = o;
         }
 
         /* -----------------------------------------------------------------------
@@ -69,7 +75,7 @@ public class DisplayScriptFastMath : MonoBehaviour
  */
     private Question generateQuestion()
     {
-        Question q = new Question("", 0);
+        Question q = new Question("", 0, 0, 0, "");
         // 0 = +, 1 = -, * = 2, / = 3, % = 4
         int operation = RandNum(0, 5);
         int num1, num2, answer;
@@ -81,28 +87,28 @@ public class DisplayScriptFastMath : MonoBehaviour
                 num1 = RandNum(50, 101);
                 num2 = RandNum(0, 50);
                 answer = num1 - num2;
-                return new Question(num1 + " - " + num2, answer);
+                return new Question(num1 + " - " + num2, answer, num1, num2, "-");
                 break;
             case 2:
                 // multiplication
                 num1 = RandNum(0, 11);
                 num2 = RandNum(0, 11);
                 answer = num1 * num2;
-                return new Question(num1 + " * " + num2, answer);
+                return new Question(num1 + " * " + num2, answer, num1, num2, "*");
                 break;
             case 3:
                 // division
                 answer = RandNum(0, 21);
                 num1 = answer * RandNum(0, 6);
                 num2 = num1 / answer;
-                return new Question(num1 + " / " + num2, answer);
+                return new Question(num1 + " / " + num2, answer, num1, num2, "/");
                 break;
             case 4:
                 // mod
                 num1 = RandNum(0, 101);
                 num2 = RandNum(0, 101);
                 answer = num1 % num2;
-                return new Question(num1 + " % " + num2, answer);
+                return new Question(num1 + " % " + num2, answer, num1, num2, "%");
                 break;
             case 0:
             default:
@@ -110,7 +116,7 @@ public class DisplayScriptFastMath : MonoBehaviour
                 num1 = RandNum(0, 101);
                 num2 = RandNum(0, 101);
                 answer = num1 + num2;
-                return new Question(num1 + " + " + num2, answer);
+                return new Question(num1 + " + " + num2, answer, num1, num2, "+");
                 break;
         }
     }
@@ -149,7 +155,24 @@ public class DisplayScriptFastMath : MonoBehaviour
             return "Say start game when you're ready to begin playing.";
         }
         string question = currentQuestion.getQuestion();
-        return "<speak>Say My answer is <break time=\"500ms\"/> followed by your answer to tell me your answer to the question</speak>";
+        if (currentQuestion.operation.Equals("+"))
+        {
+            return "Say My answer is <break time=\"500ms\"/> followed by your answer to tell me your answer to " + currentQuestion.num1.ToString() + " plus " + currentQuestion.num2.ToString();
+        } else if (currentQuestion.operation.Equals("-"))
+        {
+            return "Say My answer is <break time=\"500ms\"/> followed by your answer to tell me your answer to " + currentQuestion.num1.ToString() + " minus " + currentQuestion.num2.ToString();
+        } else if (currentQuestion.operation.Equals("*"))
+        {
+            return "Say My answer is <break time=\"500ms\"/> followed by your answer to tell me your answer to " + currentQuestion.num1.ToString() + " times " + currentQuestion.num2.ToString();
+        } else if (currentQuestion.operation.Equals("/"))
+        {
+            return "Say My answer is <break time=\"500ms\"/> followed by your answer to tell me your answer to " + currentQuestion.num1.ToString() + " divided by " + currentQuestion.num2.ToString();
+        } else if (currentQuestion.operation.Equals("%"))
+        {
+            return "Say My answer is <break time=\"500ms\"/> followed by your answer to tell me your answer to " + currentQuestion.num1.ToString() + " mod " + currentQuestion.num2.ToString();
+        }
+
+        return "<speak>Say My answer is <break time=\"500ms\"/> followed by your answer to tell me your answer to the question.</speak>";
     }
 
     // INTERACTS WITH ALEXA

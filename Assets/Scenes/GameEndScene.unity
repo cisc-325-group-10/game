@@ -508,7 +508,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: End of Game, you Escaped!
+  m_Text: End of Game, You Win!
 --- !u!222 &1944765577
 CanvasRenderer:
   m_ObjectHideFlags: 0

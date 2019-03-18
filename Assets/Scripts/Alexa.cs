@@ -116,6 +116,11 @@ public class Alexa : MonoBehaviour
         {
             return mathComp[0].onHelpRequest();
         }
+        DisplayScriptColourMemory[] colorComp = FindObjectsOfType<DisplayScriptColourMemory>();
+        if (colorComp.Length > 0)
+        {
+            return colorComp[0].onHelpRequest();
+        }
         return "No contextual help available at this time.";
     }
 
